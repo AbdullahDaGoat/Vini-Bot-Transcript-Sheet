@@ -1,0 +1,94 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 20px;
+}
+
+.transcript-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.message-container {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.username {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.user-id {
+    color: #666;
+    font-size: 12px;
+}
+
+.timestamp {
+    color: #666;
+    font-size: 12px;
+    margin-left: auto;
+}
+
+.op-indicator {
+    background-color: #0077b6;
+    color: white;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-size: 12px;
+    margin-right: 5px;
+}
+
+.moderator-indicator {
+    background-color: #ff8c00;
+    color: white;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-size: 12px;
+    margin-right: 5px;
+}
+
+.password-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.password {
+    font-weight: bold;
+}
+
+/* Dark mode styles */
+body.dark {
+    background-color: #333;
+    color: #f0f0f0;
+}
+
+.dark .transcript-container {
+    background-color: #444;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.dark .message-container {
+    border-bottom-color: #555;
+}
+
+.dark .user-id,
+.dark .timestamp {
+    color: #aaa;
+}
+
+.dark .op-indicator,
+.dark .moderator-indicator {
+    background-color: #0077b6;
+    color: #333;
+}
