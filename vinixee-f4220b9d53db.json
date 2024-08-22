@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "vinixee",
+  "private_key_id": "f4220b9d53db6899850f4b696e889b4b510b612d",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDJVgB6V2bPCnsQ\nKZA/chmuXU/4hioXX+ZYgmDlV8uHRaSD8PeUsXRQeKv57V+Q7n2FgiBMNtIPjn9S\nAVAS4aB0WRxH1t+unB0RAXtOJH5lsXQkdLomgDEP8aHeA6B+jA2SxwRtNsVoXsdQ\ngWd+RgIsQrXrnXI/qL2y8pTqtyK1QgUmWWeW339NjKueOTToHUrPGPgrShS5S1OI\nW73hfHsVpgSIg/E1qwcIX0JzD3CnFi5/ibmmYjYKfEUBaogO6wVoXCXD7M/lj6CY\nQ2i3EvFqpKoLbm79R9XiJ5JWD1OUu2ALc5eCN3JDcbD9lmIwDbE2l6lohQf/T+kl\nDqQ5uBjLAgMBAAECggEAPhnTWukTkn/6lnEjh5ZTmoc4sAD+Aai4XYuVhJgQdKCE\nDphoXUphBKM79IKFrCgLun75JFjycQ70caBrCO/kNI753KTH6M1JX+HznRY/kHFs\nUARbGJ4IxBC1a0v2GKJtW10cne07daZqVwgbGoVQjUNkZpDxWPZc0NHnIgCr6Xkw\nGY8r5puR9nTwxOLbW+Ay1MZJsDFZVeZhjB2LEYFkglKBAzpbIbeGrN84SohTmjTP\ne4daujPuk+toVKwxlxa+MTq1ajS99CJnscUV1OfI2hMMwSG7rf00AR83jX6G3XI8\nbA0jh7mNHfZX+sKTHOQXNRh0LeCl40usPmCsnHfAIQKBgQDmF6ZgyVwofTSARVkm\nb9uDEULpAFMDYDE7oeRokAWRYYikll+PClilmN0CAUMz+iWWFaAvPLjA7i8Hqlzu\nZrmkFB+14AM05ZSjpynTHBjQ3FDJULdfhXss5G9LPS3BBv8CsL2amKBsgVjbFX1A\nRmCIHIJVYTeV+HP745eyiPbOIQKBgQDgAXSa+FmY23CALIyLvAjvOPMPiQv7d7CD\nRgXFcjvKPjepUBYusDyWQLjqIozbgL4yJW0s2vw9WIHk4tcKJJn+0jOaG35c+or+\nnHsPLN3tWATBFeqTCIVUSFp1lBCIdE4K1/V1suLQMeP53YD/09259w1aR8prIcHM\n0nbS7WfRawKBgCuEb5BApTB3NbXI5+qQH1kzq47747dwuv8HSHbKPnNXmgte8WXR\nVCDFv48AhCBRgEhZgLlOZ7b9lWGCxB7GyPeSYsj4PEMF5M3q8MsftkXSVWkt3fCw\nAzLjZXU6devbEeIFYWba1QSQliihcNX2OY2krrXNNEEmA3GxguBebSdhAoGAdIiN\nTumQQvM17Zg/bZpe04S+/f//2cyEaWaOLg+lhysi7dQaFiPdARWenT9oI/EwAQpz\nZ3hs7MUUnixcToyICIb2DV/sNxaoJJjndBeVRJobrw9lvyQZqKUTWkOy7ioDR6Td\nr2Nml4S84woWyABCQzKBIcxjQ6SGG7YJ1uVmsw0CgYEAiUtKU1PohiU+vW/aVykH\n2S/uUaELnCy6Q4rS+h/IoE6impXjNozNJjAM+A3C/QRLnVdwCPg9GRvzGPkzgBM2\nk8aw6N3P8iWUmE944UfhzgLq7nkIZ3EOGeJ3UJjwX3QsjzFksbLZ+F4CUmSlRQSk\nyOvfr6+wbV8kCGHwBk9osYo=\n-----END PRIVATE KEY-----\n",
+  "client_email": "vinixee@vinixee.iam.gserviceaccount.com",
+  "client_id": "100546227289555004378",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/vinixee%40vinixee.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

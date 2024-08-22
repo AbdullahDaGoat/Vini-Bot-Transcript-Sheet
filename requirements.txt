@@ -2,3 +2,4 @@ discord.py
 Flask
 chat-exporter
 python-dotenv
+requests

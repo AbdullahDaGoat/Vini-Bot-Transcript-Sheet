@@ -9,6 +9,10 @@ import chat_exporter
 import threading
 from dotenv import load_dotenv
 from flask import Flask, render_template_string
+import requests
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+from datetime import datetime
 
 load_dotenv()
 
@@ -16,6 +20,21 @@ DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
 URL_ANCHOR = os.getenv("URL")
 
 app = Flask(__name__)
+
+intents = discord.Intents.default()
+intents.members = True
+vini = commands.Bot(command_prefix='.', intents=discord.Intents.all(), owner_id=1214793054926409738)
+vini.remove_command('help')
+
+def get_random_food_gif():
+    api_key = os.getenv('GIPHY_API_KEY') 
+    url = f"https://api.giphy.com/v1/gifs/random?api_key={api_key}&tag=food&rating=g"
+    response = requests.get(url)
+    if response.status_code == 200:
+        gif_url = response.json()['data']['images']['original']['url']
+        return gif_url
+    else:
+        return None
 
 @app.route('/transcript/<channel_id>')
 def transcript(channel_id):
@@ -26,11 +45,6 @@ def transcript(channel_id):
         return "Transcript not found", 404
 
     return render_template_string(html_content)
-
-intents = discord.Intents.default()
-intents.members = True
-vini = commands.Bot(command_prefix='.', intents=discord.Intents.all(), owner_id=1214793054926409738)
-vini.remove_command('help')
 
 @vini.event
 async def on_ready():
@@ -303,6 +317,8 @@ async def food(interaction: discord.Interaction, shifts: Shifts, region: Regions
     # Defer the initial response to avoid timeout
     await interaction.response.defer()
 
+    gif_url = get_random_food_gif()
+    
     try:
         # Save the ID of the defer message
         defer_message = await interaction.original_response()
@@ -323,14 +339,17 @@ async def food(interaction: discord.Interaction, shifts: Shifts, region: Regions
         new_channel_name = '🍔┃food-open'
         # Update region status and append message to embed based on region
         if region == Regions.USA:
+            embed.set_image(url=gif_url)
             region_status["USA"] = "Open"
             region_status["Canada"] = "Closed"
             embed.description = f'# We Are Open \n Kindly select the appropriate dropdown to place your order. If you need assistance, simply contact a Supervisor. \n \n `USA` is **Open** 🟢 \n `Canada` is **Closed** 🔴'
         elif region == Regions.Canada:
+            embed.set_image(url=gif_url)
             region_status["Canada"] = "Open"
             region_status["USA"] = "Closed"
             embed.description = f'# We Are Open \n Kindly select the appropriate dropdown to place your order. If you need assistance, simply contact a Supervisor. \n \n `USA` is **Closed** 🔴 \n `Canada` is **Open** 🟢'
         elif region == Regions.Both:
+            embed.set_image(url=gif_url)
             region_status["USA"] = "Open"
             region_status["Canada"] = "Open"
             embed.description = f'# We Are Open \n Kindly select the appropriate dropdown to place your order. If you need assistance, simply contact a Supervisor. \n \n `USA` is **Open** 🟢 \n `Canada` is **Open** 🟢'
@@ -579,6 +598,22 @@ class ticket_canada(discord.ui.Modal, title='Canada Delivery Information'):
         await channel.send(f"{interaction.user.mention} {role4.mention}", delete_after = 1)
         await channel.send(f"Hello **{interaction.user}**, thank you for choosing `SavingsHub`.\n\nAn **Attendant** will be with you shortly")
 
+def get_google_sheet(sheet_name):
+    scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+    credentials = ServiceAccountCredentials.from_json_keyfile_name('./vinixee-f4220b9d53db.json', scope)
+    client = gspread.authorize(credentials)
+    return client.open(sheet_name).sheet1
+
+# Map user IDs to Google Sheet names
+user_sheets = {
+    "483084770205499392": "Cripsy Sheet",
+    "479139962961526784": "Dal Sheet",
+    "1225513625113067614": "Matthew Sheet",
+    "925075525570023444": "Splito Sheet",
+    "875161585423884319": "Time Sheet",
+    "1134392440716017704": "Blash Sheet",
+    "1230351684325081171": "DebateMyRoomba Sheet"
+}
 
 class completion(discord.ui.Modal, title='Order Price Details'):
 
@@ -627,20 +662,38 @@ class completion(discord.ui.Modal, title='Order Price Details'):
             # Send the message to the ticket channel
             embed1 = discord.Embed(colour=0x0cc05f)
             embed1.set_author(name="Pay Info")
-            embed1.add_field(name="Attendant Paid", value=f"__**${self.you}**__", inline=True)
-            embed1.add_field(name="Customer Paid", value=f"__**${self.customer}**__", inline=True)
+            embed1.add_field(name="Attendant Paid", value=f"__**${your_amount}**__", inline=True)
+            embed1.add_field(name="Customer Paid", value=f"__**${customer_amount}**__", inline=True)
             embed1.add_field(name="Revenue", value=f"${reimbursement} \n \n {interaction.user.mention} {self.channel.mention}", inline=False)
-            embed1.add_field(name="Referall", value=f"\n They were referred by: {self.referall_input}", inline=False)
+            embed1.add_field(name="Referral", value=f"\n They were referred by: {self.referall.value}", inline=False)
+
+            # Log data to the respective Google Sheet
+            user_id = str(interaction.user.id)
+            if user_id in user_sheets:
+                sheet_name = user_sheets[user_id]
+                sheet = get_google_sheet(sheet_name)
+                date_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+                # Find the first completely empty row across columns C, D, and E
+                col_c_values = sheet.col_values(3)
+                col_d_values = sheet.col_values(4)
+                col_e_values = sheet.col_values(5)
+                
+                # Calculate the max of these to find the next available row
+                max_length = max(len(col_c_values), len(col_d_values), len(col_e_values))
+                
+                # Determine the next row; add 1 to get the first empty row
+                next_row = max_length + 1
+
+                # Update the cells in the next available row
+                sheet.update(range_name=f'C{next_row}:E{next_row}', values=[[date_time, your_amount, customer_amount]])
 
             # Generate transcript
             transcript_url = await get_transcript(self.channel, 1263292644423897128)
             if transcript_url:
                 embed1.add_field(name="Transcript", value=f"[Download Transcript]({transcript_url})", inline=False)
-                
-                # Send DM to the user
-                user = interaction.user  # Getting the user who initiated the command
+                user = interaction.user
                 await user.send(f"Here is your transcript: {transcript_url}")
-
             else:
                 embed1.add_field(name="Transcript", value="No transcript available.", inline=False)
 
@@ -648,11 +701,9 @@ class completion(discord.ui.Modal, title='Order Price Details'):
             await interaction.channel.edit(category=new_category)
             await interaction.message.delete()
             user = discord.utils.get(interaction.guild.members, name=self.initiator)
-            await interaction.response.defer()
             await interaction.followup.send(f"Thank you for using `SavingsHub` {user.mention}. Your ticket will be open for **24 hours** in case you need any other assistance. Have a great day/evening!")
         except ValueError:
             await interaction.followup.send("Please enter a number value. EX: **20.50** or **20**.", ephemeral=True)
-
 if __name__ == "__main__":
     vini.run(DISCORD_TOKEN)
 
